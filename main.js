@@ -21,7 +21,7 @@ window.onload = function() {
 			urls:['assets/audio/major_pentatonic_eighths_marimba.ogg'],
 			volume:0.5,
 			sprite:{
-				0:[0,LENGTH],
+				0:[INTERVALS * 0,LENGTH],
 				1:[INTERVALS * 1,LENGTH],
 				2:[INTERVALS * 2,LENGTH],
 				3:[INTERVALS * 3,LENGTH],
