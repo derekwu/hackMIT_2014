@@ -99,8 +99,10 @@ window.onload = function() {
 
 			if (totalQueries > 0 && isComplete) {
 				totalQueries = 0;
-				console.log("SUCcESS");
+				console.log(board_state.board);
+				console.log("SUCCESS");
 				console.log(binaryArray);
+				populate_board(binaryArray);
 
 			}
 
@@ -124,27 +126,25 @@ window.onload = function() {
 	}
 	
 	function populate_board(binary_array) {
-		if (binary_array.length < SIZE * SIZE) {
-			binary_array_extended = binary_array;
-			while (binary_array_extended.length < SIZE*SIZE) {
-				binary_array_extended = binary_array_extended.concat(binary_array);
-			}
-			binary_array = binary_array_extended;
-		}
-
-		binary_array_ind = 0;
+		console.log(board_state.board)
+		var result_length = binary_array.length;
+		var binary_index = 0;
 		for (i = 0; i < SIZE; i++) {
 			for (j = 0; j < SIZE; j++) {
-				board_state.board[i][j] = binary_array[binary_array_ind + j];
-				if (j == SIZE - 1) {
-					binary_array_ind += j;
-				}
+				board_state.board[i][j] = binary_array[binary_index];
+				update_cell(board_state.board[i][j], false, i, j)
+				binary_index = (binary_index + 1) % result_length;
 			}
 		}
+		console.log(board_state.board);
 	}
 
 	function score2sentiment(score) {
-		return (score >= 0);
+		if (score >= 0) {
+			return 1
+		} else {
+			return 0
+		};
 	}
 	
 	function setup() {
