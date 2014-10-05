@@ -1,8 +1,18 @@
 #game{
+position:relative;
+overflow: hidden
+float:left;
+margin:0 auto
+}
+
+#query{
+position:relative;
+overflow: hidden
+float:left;
 }
 
 #textbox1{
 	height:200px;
-	width:600px;
+	width:394px;
 	rows:10;
 }

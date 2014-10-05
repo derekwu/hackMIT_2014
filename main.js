@@ -12,10 +12,12 @@ window.onload = function() {
 	var CELL_WIDTH = 25;
 	var CELL_HEIGHT = 25;
 
+	var SENTIMENT_THRESHOLD = .25
+
 	var SIZE = 16;
 	var board_state = new music_board(SIZE);
 
-	var game = new Phaser.Game(CELL_WIDTH * SIZE, CELL_HEIGHT * SIZE, Phaser.AUTO, '#game', { preload: preload, create: create, update: update });
+	var game = new Phaser.Game(CELL_WIDTH * SIZE, CELL_HEIGHT * SIZE, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
 
 	var frame_counter = 0;
 	var column_counter = 0;
@@ -134,7 +136,7 @@ window.onload = function() {
 	}
 
 	function score2sentiment(score) {
-		if (score >= .5) {
+		if (score >= SENTIMENT_THRESHOLD) {
 			return 1
 		} else {
 			return 0
