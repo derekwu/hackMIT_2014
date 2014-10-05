@@ -59,6 +59,8 @@ window.onload = function() {
 
 	function create() {
 		this.game.board_sprites = draw_board(board_state.board)
+		sentiment_obj = sentiment_analysis("I hate cats", "synchronous");
+		console.log(sentiment_obj.negative);
 	}
 
 	function update() {
