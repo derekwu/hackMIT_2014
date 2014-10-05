@@ -12,7 +12,10 @@ function music_board(size) {
             } else {
                 board_state[i][j] = 0
             }
-            //board_state[i][j] = Math.floor((Math.random() * 2));
+            board_state[i][j] = Math.floor((Math.random() * 2));
+            if (board_state[i][j] === 1) {
+                board_state[i][j] = Math.floor((Math.random() * 2));
+            }
         }
     }
 

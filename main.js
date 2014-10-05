@@ -13,29 +13,30 @@ window.onload = function() {
 
 	var frame_counter = 0;
 	var column_counter = 0;
-	
+
 	LENGTH = 250
+	INTERVALS = 500;
 
 	var notes = new Howl({
 			urls:['assets/audio/major_pentatonic_eighths_marimba.ogg'],
 			volume:0.5,
 			sprite:{
 				0:[0,LENGTH],
-				1:[1000,LENGTH],
-				2:[2000,LENGTH],
-				3:[3000,LENGTH],
-				4:[4000,LENGTH],
-				5:[5000,LENGTH],
-				6:[6000,LENGTH],
-				7:[7000,LENGTH],
-				8:[8000,LENGTH],
-				9:[9000,LENGTH],
-				10:[10000,LENGTH],
-				11:[11000,LENGTH],
-				12:[12000,LENGTH],
-				13:[13000,LENGTH],
-				14:[14000,LENGTH],
-				15:[15000,LENGTH]
+				1:[INTERVALS * 1,LENGTH],
+				2:[INTERVALS * 2,LENGTH],
+				3:[INTERVALS * 3,LENGTH],
+				4:[INTERVALS * 4,LENGTH],
+				5:[INTERVALS * 5,LENGTH],
+				6:[INTERVALS * 6,LENGTH],
+				7:[INTERVALS * 7,LENGTH],
+				8:[INTERVALS * 8,LENGTH],
+				9:[INTERVALS * 9,LENGTH],
+				10:[INTERVALS * 10,LENGTH],
+				11:[INTERVALS * 11,LENGTH],
+				12:[INTERVALS * 12,LENGTH],
+				13:[INTERVALS * 13,LENGTH],
+				14:[INTERVALS * 14,LENGTH],
+				15:[INTERVALS * 15,LENGTH]
 			}
 		});
 
@@ -48,7 +49,6 @@ window.onload = function() {
 	}
 
 	function create() {
-		alert(board_state.board);
 
 		this.game.board_sprites = draw_board(board_state.board)
 
@@ -70,7 +70,7 @@ window.onload = function() {
 			//alert(column_counter);
 			for (i = 0; i < SIZE; i ++) {
 				if (board_state.board[i][column_counter] == 1) {
-					notes.play(i.toString());
+					notes.play((SIZE-1-i).toString());
 					//notes.fade(1,0,500);
 				}
 			}
