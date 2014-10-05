@@ -76,7 +76,7 @@ window.onload = function() {
 		
 		if (frame_counter === 0) {
 			
-			if (num_ids_finished < totalQueries) {
+			if (totalQueries > 0 && num_ids_finished < totalQueries) {
 				for (var ind in jobIDs) {
 					for (var ID in jobIDs[ind]) {
 						if (!jobIDs[ind][ID]) {
@@ -94,7 +94,7 @@ window.onload = function() {
 			} 
 			
 			else {
-				if (!update_complete) {
+				if (!update_complete && totalQueries > 0) {
 					populate_board(binaryArray);
 					for (i = 0; i < SIZE; i++) {
 						for (j = 0; j < SIZE; j++) {
@@ -151,7 +151,7 @@ window.onload = function() {
 		$("#button1").click(function() {
 			var text = $("#textbox1").val();
             queries = text.split(/[?.!]/);
-            console.log(queries);
+            //console.log(queries);
             text_processing(queries);
 			binaryArray = new Array(queries.length);
 			totalQueries = queries.length;
