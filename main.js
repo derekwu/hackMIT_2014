@@ -20,7 +20,7 @@ window.onload = function() {
 	var frame_counter = 0;
 	var column_counter = 0;
 	
-	var jobIDs = {};
+	var jobIDs = [];
 	var binaryArray = [];
 	var totalQueries = 0;
 	var num_ids_finished = 0;
@@ -75,35 +75,35 @@ window.onload = function() {
 		column_counter = column_counter % SIZE;
 		
 		if (frame_counter === 0) {
-			
-			if (totalQueries > 0 && num_ids_finished < totalQueries) {
-				for (var ind in jobIDs) {
-					for (var ID in jobIDs[ind]) {
-						if (!jobIDs[ind][ID]) {
-							sentiment_obj = asynchronous_get(jobIDs[j]);
-							if (sentiment_obj.status == "finished") {
-								score = sentiment_obj.aggregate.score;
-								sentiment = score2sentiment(score);
-								binaryArray[ind] = sentiment;
-								jobIDs[ind][key] = true;
-								num_ids_finished += 1;
-							}
+
+			var isComplete = true
+
+			if (totalQueries > 0) {
+				for (var i = 0; i < jobIDs.length; i++) {
+					obj_tuple = jobIDs[i];
+					if (!obj_tuple[1]) {
+						json_response = asynchronous_get(obj_tuple[0]);
+						if (json_response.status === "finished") {
+							score = json_response.actions[0].result.aggregate.score;
+							sentiment = score2sentiment(score);
+							binaryArray.push(sentiment);
+							// TODO fix
+							obj_tuple[1] = true;
+						} else {
+							isComplete = false
 						}
+
 					}
-				}
-			} 
-			
-			else {
-				if (!update_complete && totalQueries > 0) {
-					populate_board(binaryArray);
-					for (i = 0; i < SIZE; i++) {
-						for (j = 0; j < SIZE; j++) {
-							update_cell(board_state.board[i][j], false, i, j);
-						}
-					}
-					update_complete = true;
 				}
 			}
+
+			if (totalQueries > 0 && isComplete) {
+				totalQueries = 0;
+				console.log("SUCcESS");
+				console.log(binaryArray);
+
+			}
+
 		
 		
 		
@@ -151,24 +151,27 @@ window.onload = function() {
 		$("#button1").click(function() {
 			var text = $("#textbox1").val();
             queries = text.split(/[?.!]/);
-            //console.log(queries);
-            text_processing(queries);
-			binaryArray = new Array(queries.length);
-			totalQueries = queries.length;
+			binaryArray = [];
 			num_ids_finished = 0;
 			update_complete = false;
+			console.log(queries);
+			text_processing(queries);
         });
 	}
 	
 	function text_processing(queries) {
-		var jobIDs = {};
+		jobIDs = [];
+		totalQueries = 0
 		for (j = 0; j < queries.length; j++) {
 			if (queries[j].length > 0) {
 				jobID_obj = sentiment_analysis(queries[j], "asynchronous");
 				jobID = jobID_obj.jobID;
-				jobIDs[j] = {jobID:false};
+				jobIDs.push([jobID, false]);
+				console.log(jobID);
+				totalQueries ++;
 			}
 		}
+		console.log(jobIDs);
 	}
 
 	function draw_board(board) {

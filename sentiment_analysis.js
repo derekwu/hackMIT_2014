@@ -12,12 +12,10 @@ function sentiment_analysis(text, option) {
 }
 
 function asynchronous_get(jobID) {
+	console.log(jobID);
 	url = "https://api.idolondemand.com/1/job/status/" + jobID + "?&apikey=dc0d39a1-c043-4230-92a9-45528e18fbfa";
 	json = httpGet(url);
-	var sentiment_obj = JSON.parse(json);
-	if (sentiment_obj.status == "finished") {
-		return sentiment_obj.actions[0].result
-	}
+	return JSON.parse(json);
 }
 
 function httpGet(theUrl) {
