@@ -89,7 +89,9 @@ window.onload = function() {
 	function setup() {
 		$("#button1").click(function() {
 			var text = $("#textbox1").val();
-            console.log(text);
+            queries = text.split(/[?.!]/);
+            console.log(queries);
+            // TODO: mess with queries
         });
 	}
 	
