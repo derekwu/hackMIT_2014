@@ -1,14 +1,17 @@
 // these are hard wired but meh who cares for now
 var TILE_WIDTH = 100
-var TILE_HEIGHT = 100
+var TILE_HEIGHT = 100;
 
-var CELL_WIDTH = 25
-var CELL_HEIGHT = 25
+var CELL_WIDTH = 25;
+var CELL_HEIGHT = 25;
 
-var SIZE = 16
+var SIZE = 16;
+var board_state = new music_board(SIZE);
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
 
+var frame_counter = 0;
+var column_counter = 0;
 
 function preload() {
 	game.load.audio('major_pentatonic', 'assets/audio/major_pentatonic.ogg');
@@ -18,20 +21,37 @@ function preload() {
 }
 
 function create() {
-	var board_state = new music_board(SIZE);
 	alert(board_state.board);
 
 	this.game.board_sprites = draw_board(board_state.board)
 	
 	fx = setup_notes();
+	fx.play("10");
 }
 
 function update() {
+/**
+	frame_counter = frame_counter % 60;
+	column_counter = column_counter % SIZE;
+	
+	if (frame_counter == 0) {
+		for (i = 0; i < SIZE; i ++) {
+			if (board_state.board[i][column_counter] == 1) {
+				fx.play(i.toString());
+				alert(column_counter);
+			}
+		}
+	}
+	
+	
+	frame_counter += 1;
+	column_counter += 1;
+	**/
 }
 
 function setup_notes() {
-	fx = game.add.audio('sfx');
-	for (i = 0; i < board_state.size; i++) {
+	fx = game.add.audio('major_pentatonic');
+	for (i = 0; i < SIZE; i++) {
 		key = i.toString();
 		start = i;
 		duration = i;
@@ -52,7 +72,7 @@ function draw_board(board) {
 	return sprites_array;
 }
 
-function draw_cell(value, column, row) {
+function draw_cell(value, row, column) {
 	var cell;
 	if (value === 0) {
 		cell = game.add.sprite(column * CELL_WIDTH, row * CELL_HEIGHT, 'dormant_square');

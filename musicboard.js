@@ -12,6 +12,5 @@ function music_board(size_int) {
         }
     }
 
-    this.board_state = board;
-	this.size = size;
+    this.board = board_state;
 }
