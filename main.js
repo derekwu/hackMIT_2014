@@ -61,6 +61,8 @@ window.onload = function() {
 		fx = setup_notes();
 		fx.play();
 		*/
+		sentiment_obj = sentiment_analysis("I hate cats", "synchronous");
+		console.log(sentiment_obj.negative);
 	}
 
 	function update() {
