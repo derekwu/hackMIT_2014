@@ -13,8 +13,11 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, cr
 var frame_counter = 0;
 var column_counter = 0;
 
+//var major_pentatonic_scale = new Array(16);
+
+
 function preload() {
-	game.load.audio('major_pentatonic', 'assets/audio/major_pentatonic.wav');
+	game.load.audio('major_pentatonic', 'assets/audio/outputMozart.wav');
 	game.load.image('dormant_square', 'assets/images/dormant_square.png');
 	game.load.image('active_square', 'assets/images/active_square.png');
 
@@ -25,17 +28,29 @@ function create() {
 
 	this.game.board_sprites = draw_board(board_state.board)
 	
+	
 
+	var notes = new Howl({
+		urls:['assets/audio/major_pentatonic.ogg'],
+		sprite:{
+			0:[0,1000],
+			1:[1000,1000],
+			2:[2000,1000],
+		}
+	});
+	
+	notes.play('1');
+
+	/*
 	fx = game.add.audio('major_pentatonic');
 	fx.play();
-	/*
+
 	fx = setup_notes();
 	fx.play();
 	*/
 }
 
 function update() {
-	console.log(game.cache.isSoundDecoded('major_pentatonic'))
 	
 /**
 	frame_counter = frame_counter % 60;
