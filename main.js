@@ -15,10 +15,11 @@ window.onload = function() {
 	var SIZE = 16;
 	var board_state = new music_board(SIZE);
 
-	var game = new Phaser.Game(CELL_WIDTH * SIZE, CELL_HEIGHT * SIZE, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
+	var game = new Phaser.Game(CELL_WIDTH * SIZE, CELL_HEIGHT * SIZE, Phaser.AUTO, '#game', { preload: preload, create: create, update: update });
 
 	var frame_counter = 0;
 	var column_counter = 0;
+	var async_counter = 0
 	
 	var jobIDs = [];
 	var binaryArray = [];
@@ -65,16 +66,14 @@ window.onload = function() {
 
 	function create() {
 		this.game.board_sprites = draw_board(board_state.board)
-		//sentiment_obj = sentiment_analysis("I hate cats", "synchronous");
-		//console.log(sentiment_obj.negative[0].score);
 	}
 	
 	function update() {
 		
 		frame_counter = frame_counter % 15;
 		column_counter = column_counter % SIZE;
-		
-		if (frame_counter === 0) {
+		async_counter = async_counter % 15;
+		if (async_counter === 0) {
 
 			var isComplete = true
 
@@ -86,7 +85,7 @@ window.onload = function() {
 						if (json_response.status === "finished") {
 							score = json_response.actions[0].result.aggregate.score;
 							sentiment = score2sentiment(score);
-							binaryArray.push(sentiment);
+							binaryArray[i]=sentiment;
 							// TODO fix
 							obj_tuple[1] = true;
 						} else {
@@ -99,16 +98,12 @@ window.onload = function() {
 
 			if (totalQueries > 0 && isComplete) {
 				totalQueries = 0;
-				console.log(board_state.board);
-				console.log("SUCCESS");
-				console.log(binaryArray);
 				populate_board(binaryArray);
 
 			}
-
+		}
 		
-		
-		
+		if (frame_counter === 0) {
 			for (i = 0; i < SIZE; i ++) {
 				prev_column_index = (column_counter - 1) % SIZE
 				if (prev_column_index === -1) {
@@ -123,10 +118,10 @@ window.onload = function() {
 			column_counter += 1;
 		}
 		frame_counter += 1;
+		async_counter += 1;
 	}
 	
 	function populate_board(binary_array) {
-		console.log(board_state.board)
 		var result_length = binary_array.length;
 		var binary_index = 0;
 		for (i = 0; i < SIZE; i++) {
@@ -136,11 +131,10 @@ window.onload = function() {
 				binary_index = (binary_index + 1) % result_length;
 			}
 		}
-		console.log(board_state.board);
 	}
 
 	function score2sentiment(score) {
-		if (score >= 0) {
+		if (score >= .5) {
 			return 1
 		} else {
 			return 0
@@ -151,10 +145,8 @@ window.onload = function() {
 		$("#button1").click(function() {
 			var text = $("#textbox1").val();
             queries = text.split(/[?.!]/);
-			binaryArray = [];
 			num_ids_finished = 0;
 			update_complete = false;
-			console.log(queries);
 			text_processing(queries);
         });
 	}
@@ -167,11 +159,10 @@ window.onload = function() {
 				jobID_obj = sentiment_analysis(queries[j], "asynchronous");
 				jobID = jobID_obj.jobID;
 				jobIDs.push([jobID, false]);
-				console.log(jobID);
 				totalQueries ++;
 			}
 		}
-		console.log(jobIDs);
+		binaryArray = new Array(totalQueries);
 	}
 
 	function draw_board(board) {

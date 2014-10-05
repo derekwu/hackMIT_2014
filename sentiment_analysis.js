@@ -12,7 +12,6 @@ function sentiment_analysis(text, option) {
 }
 
 function asynchronous_get(jobID) {
-	console.log(jobID);
 	url = "https://api.idolondemand.com/1/job/status/" + jobID + "?&apikey=dc0d39a1-c043-4230-92a9-45528e18fbfa";
 	json = httpGet(url);
 	return JSON.parse(json);
