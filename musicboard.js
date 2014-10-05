@@ -11,5 +11,6 @@ function music_board(size) {
         }
     }
 
-    this.board_state = board
+    this.board_state = board;
+	this.size = size;
 }
