@@ -20,9 +20,11 @@ window.onload = function() {
 	var frame_counter = 0;
 	var column_counter = 0;
 	
-	totalNumberOfJobs = 0;
 	var jobIDs = {};
-	var jobIDFinished = {};
+	var binaryArray = [];
+	var totalQueries = 0;
+	var num_ids_finished = 0;
+	var update_complete = false;
 
 	LENGTH = 250
 	INTERVALS = 500;
@@ -63,28 +65,48 @@ window.onload = function() {
 
 	function create() {
 		this.game.board_sprites = draw_board(board_state.board)
-		sentiment_obj = sentiment_analysis("I hate cats", "synchronous");
-		console.log(sentiment_obj.negative[0].score);
+		//sentiment_obj = sentiment_analysis("I hate cats", "synchronous");
+		//console.log(sentiment_obj.negative[0].score);
 	}
 	
 	function update() {
-	
-		for (j = 0; j < totalNumberOfJobs; j++) {
-			if (!(jobIDFinished.hasOwnProperty(jobIDs[j]))) {
-				sentiment_obj = asynchronous_get(jobIDs[j]);
-				if (sentiment_obj.status == "finished") {
-					score = sentiment_obj.aggregate.score;
-					sentiment = score2sentiment(score);
-				}
-			}
-		}
-	
-
 		
 		frame_counter = frame_counter % 15;
 		column_counter = column_counter % SIZE;
 		
 		if (frame_counter === 0) {
+			
+			if (num_ids_finished < totalQueries) {
+				for (var ind in jobIDs) {
+					for (var ID in jobIDs[ind]) {
+						if (!jobIDs[ind][ID]) {
+							sentiment_obj = asynchronous_get(jobIDs[j]);
+							if (sentiment_obj.status == "finished") {
+								score = sentiment_obj.aggregate.score;
+								sentiment = score2sentiment(score);
+								binaryArray[ind] = sentiment;
+								jobIDs[ind][key] = true;
+								num_ids_finished += 1;
+							}
+						}
+					}
+				}
+			} 
+			
+			else {
+				if (!update_complete) {
+					populate_board(binaryArray);
+					for (i = 0; i < SIZE; i++) {
+						for (j = 0; j < SIZE; j++) {
+							update_cell(board_state.board[i][j], false, i, j);
+						}
+					}
+					update_complete = true;
+				}
+			}
+		
+		
+		
 			for (i = 0; i < SIZE; i ++) {
 				prev_column_index = (column_counter - 1) % SIZE
 				if (prev_column_index === -1) {
@@ -100,6 +122,26 @@ window.onload = function() {
 		}
 		frame_counter += 1;
 	}
+	
+	function populate_board(binary_array) {
+		if (binary_array.length < SIZE * SIZE) {
+			binary_array_extended = binary_array;
+			while (binary_array_extended.length < SIZE*SIZE) {
+				binary_array_extended = binary_array_extended.concat(binary_array);
+			}
+			binary_array = binary_array_extended;
+		}
+
+		binary_array_ind = 0;
+		for (i = 0; i < SIZE; i++) {
+			for (j = 0; j < SIZE; j++) {
+				board_state.board[i][j] = binary_array[binary_array_ind + j];
+				if (j == SIZE - 1) {
+					binary_array_ind += j;
+				}
+			}
+		}
+	}
 
 	function score2sentiment(score) {
 		return (score >= 0);
@@ -110,19 +152,21 @@ window.onload = function() {
 			var text = $("#textbox1").val();
             queries = text.split(/[?.!]/);
             console.log(queries);
-            // TODO: mess with queries
+            text_processing(queries);
+			binaryArray = new Array(queries.length);
+			totalQueries = queries.length;
+			num_ids_finished = 0;
+			update_complete = false;
         });
 	}
 	
 	function text_processing(queries) {
 		var jobIDs = {};
-		var jobIDFinished = {};
 		for (j = 0; j < queries.length; j++) {
 			if (queries[j].length > 0) {
 				jobID_obj = sentiment_analysis(queries[j], "asynchronous");
 				jobID = jobID_obj.jobID;
-				jobIDs[j] = jobID;
-				totalNumberOfJobs += 1;
+				jobIDs[j] = {jobID:false};
 			}
 		}
 	}
