@@ -14,7 +14,7 @@ window.onload = function() {
 	var frame_counter = 0;
 	var column_counter = 0;
 	
-	LENGTH = 500
+	LENGTH = 250
 
 	var notes = new Howl({
 			urls:['assets/audio/major_pentatonic_eighths_marimba.ogg'],
@@ -63,7 +63,7 @@ window.onload = function() {
 
 	function update() {
 		
-		frame_counter = frame_counter % 30;
+		frame_counter = frame_counter % 15;
 		column_counter = column_counter % SIZE;
 		
 		if (frame_counter === 0) {

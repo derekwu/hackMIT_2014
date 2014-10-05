@@ -1,14 +1,18 @@
-function music_board(size_int) {
-	this.size = size_int
-	var board_state = new Array(size_int);
-	for (i = 0; i < size_int; i++) {
-		board_state[i] = new Array(size_int);
+function music_board(size) {
+	var board_state = new Array(size);
+	for (i = 0; i < size; i++) {
+		board_state[i] = new Array(size);
 	}
 
 	// Populate board with random values
-    for (i = 0; i < size_int; i++) {
-        for (j = 0; j < size_int; j++) {
-            board_state[i][j] = Math.floor((Math.random() * 2));
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            if (i===j) {
+                board_state[i][j] = 1
+            } else {
+                board_state[i][j] = 0
+            }
+            //board_state[i][j] = Math.floor((Math.random() * 2));
         }
     }
 
