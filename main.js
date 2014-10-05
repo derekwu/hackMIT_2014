@@ -99,6 +99,7 @@ window.onload = function() {
 			}
 
 			if (totalQueries > 0 && isComplete) {
+				$("#loading").text("Music Map Generated!");
 				totalQueries = 0;
 				populate_board(binaryArray);
 
@@ -145,8 +146,9 @@ window.onload = function() {
 	
 	function setup() {
 		$("#button1").click(function() {
+			$("#loading").text("Generating...")
 			var text = $("#textbox1").val();
-            queries = text.split(/[?.!]/);
+            queries = text.split(/[?.!\n]/);
 			num_ids_finished = 0;
 			update_complete = false;
 			text_processing(queries);

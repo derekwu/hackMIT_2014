@@ -3,7 +3,7 @@
     <head>
         <link rel="stylesheet" type="text/css" href="musiker.css">
         <meta charset="UTF-8" />
-        <title>Musiker</title>
+        <title>Rhapsody in Words</title>
 		<script src="howler.min.js"></script>
 		<script src="sentiment_analysis.js"></script>
         <script src="phaser.min.js"></script>
@@ -15,17 +15,20 @@
     <div>
         <div class="header">
                 <h1 class="title">
-                    TransProse
+                    Rhapsody in Words
                 </h1> 
-                <h3 class="description">
-                    Type description here.
-                </h3>
+                <h5 class="description">
+                    Rhapsody in Words generates music based on the sentiment of the input text! Give it a spin by inputting a block of text (works best if text contains around 256 sentences). A highlighted block indicates a positive sentiment sentence, a blank block indicates a neutral or negative sentiment sentence.
+                </h5>
         </div>
         <div id='game'></div>
+        <h6 id='loading'></h6>
         <br>
         <div id='query' >
-            <textarea id="textbox1"></textarea> <br>
+            <textarea id="textbox1">Enter text here!</textarea><br>
+            <div id='button'>
             <input type="submit" id="button1" value="Generate Sentiment Music Map" />
+        </div>
         </div>
     </div>
 
