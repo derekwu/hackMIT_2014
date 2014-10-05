@@ -4,7 +4,6 @@ function sentiment_analysis(text, option) {
 	} else {
 		url = "https://api.idolondemand.com/1/api/async/analyzesentiment/v1";
 	}
-	
 	url = url + "?text=" + text + "&apikey=dc0d39a1-c043-4230-92a9-45528e18fbfa";
 	
 	json = httpGet(url);
@@ -23,7 +22,6 @@ function asynchronous_get(jobID) {
 
 function httpGet(theUrl) {
 	var xmlHttp = null;
-
 	xmlHttp = new XMLHttpRequest();
 	xmlHttp.open( "GET", theUrl, false );
 	xmlHttp.send( null );

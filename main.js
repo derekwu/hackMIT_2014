@@ -62,10 +62,26 @@ window.onload = function() {
 		fx.play();
 		*/
 		sentiment_obj = sentiment_analysis("I hate cats", "synchronous");
-		console.log(sentiment_obj.negative);
+		console.log(sentiment_obj.negative[0].score);
 	}
 
+	var jobIDs = {};
+	var jobIDFinished = {};
+	
 	function update() {
+	
+		text = [];
+		for (j = 0; j < text.length; j++) {
+			jobID_obj = sentiment_analysis(text[j], "asynchronous");
+			jobID = jobID_obj.jobID;
+			jobIDs[j] = jobID;
+		}
+		
+		for (k = 0; j < text.length; j++) {
+			jobID_obj = sentiment_analysis(text[j], "asynchronous");
+			jobID = jobID_obj.jobID;
+			jobIDs[j] = jobID;
+		}
 		
 		frame_counter = frame_counter % 15;
 		column_counter = column_counter % SIZE;
@@ -86,11 +102,10 @@ window.onload = function() {
 			}
 			column_counter += 1;
 		}
-		
 		frame_counter += 1;
 	}
 		
-	/**
+	/*
 		frame_counter = frame_counter % 60;
 		column_counter = column_counter % SIZE;
 		
@@ -106,7 +121,7 @@ window.onload = function() {
 		
 		frame_counter += 1;
 		column_counter += 1;
-		**/
+		
 	
 
 	function setup_notes() {
@@ -118,7 +133,7 @@ window.onload = function() {
 			fx.addMarker(key, start, duration);
 		}
 		return fx;
-	}
+	}*/
 
 	function draw_board(board) {
 		var sprites_array = [];
