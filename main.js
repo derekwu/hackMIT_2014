@@ -14,7 +14,7 @@ var frame_counter = 0;
 var column_counter = 0;
 
 function preload() {
-	game.load.audio('major_pentatonic', 'assets/audio/major_pentatonic.ogg');
+	game.load.audio('major_pentatonic', 'assets/audio/major_pentatonic.wav');
 	game.load.image('dormant_square', 'assets/images/dormant_square.png');
 	game.load.image('active_square', 'assets/images/active_square.png');
 
@@ -25,11 +25,18 @@ function create() {
 
 	this.game.board_sprites = draw_board(board_state.board)
 	
+
+	fx = game.add.audio('major_pentatonic');
+	fx.play();
+	/*
 	fx = setup_notes();
-	fx.play("10");
+	fx.play();
+	*/
 }
 
 function update() {
+	console.log(game.cache.isSoundDecoded('major_pentatonic'))
+	
 /**
 	frame_counter = frame_counter % 60;
 	column_counter = column_counter % SIZE;
