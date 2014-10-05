@@ -13,6 +13,7 @@ window.onload = function() {
 
 	var frame_counter = 0;
 	var column_counter = 0;
+	
 	LENGTH = 500
 
 	var notes = new Howl({
@@ -77,7 +78,7 @@ window.onload = function() {
 		}
 		
 		frame_counter += 1;
-		
+	}
 		
 	/**
 		frame_counter = frame_counter % 60;
@@ -96,7 +97,7 @@ window.onload = function() {
 		frame_counter += 1;
 		column_counter += 1;
 		**/
-	}
+	
 
 	function setup_notes() {
 		fx = game.add.audio('major_pentatonic');
