@@ -22,9 +22,22 @@ function create() {
 	alert(board_state.board);
 
 	this.game.board_sprites = draw_board(board_state.board)
+	
+	fx = setup_notes();
 }
 
 function update() {
+}
+
+function setup_notes() {
+	fx = game.add.audio('sfx');
+	for (i = 0; i < board_state.size; i++) {
+		key = i.toString();
+		start = i;
+		duration = i;
+		fx.addMarker(key, start, duration);
+	}
+	return fx;
 }
 
 function draw_board(board) {
