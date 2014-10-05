@@ -45,6 +45,8 @@ window.onload = function() {
 		//game.load.audio('major_pentatonic', 'assets/audio/outputMozart.wav');
 		game.load.image('dormant_square', 'assets/images/dormant_square.png');
 		game.load.image('active_square', 'assets/images/active_square.png');
+		game.load.image('highlight_dormant_square', 'assets/images/highlight_dormant_square.png');
+		game.load.image('highlight_active_square', 'assets/images/highlight_active_square.png');
 
 	}
 
@@ -69,6 +71,12 @@ window.onload = function() {
 		if (frame_counter === 0) {
 			//alert(column_counter);
 			for (i = 0; i < SIZE; i ++) {
+				prev_column_index = (column_counter - 1) % SIZE
+				if (prev_column_index === -1) {
+					prev_column_index = SIZE -1
+				}
+				update_cell(board_state.board[i][prev_column_index], false, i, prev_column_index);
+				update_cell(board_state.board[i][column_counter], true, i, column_counter);
 				if (board_state.board[i][column_counter] == 1) {
 					notes.play((SIZE-1-i).toString());
 					//notes.fade(1,0,500);
@@ -133,5 +141,19 @@ window.onload = function() {
 		cell.scale.x = CELL_WIDTH/TILE_WIDTH;
 		cell.scale.y = CELL_HEIGHT/TILE_HEIGHT;
 		return cell;
+	}
+
+	function update_cell(value, is_highlighted, row, column) {
+
+		cell = game.board_sprites[row][column];
+		if (value === 1 && is_highlighted) {
+			cell.loadTexture('highlight_active_square');
+		} else if (value === 0 && is_highlighted) {
+			cell.loadTexture('highlight_dormant_square');
+		} else if (value === 1 && !is_highlighted) {
+			cell.loadTexture('active_square');
+		} else if (value === 0 && !is_highlighted) {
+			cell.loadTexture('dormant_square');
+		}
 	}
 }
