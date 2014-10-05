@@ -8,7 +8,8 @@ function preload() {
 }
 
 function create() {
-
+	board_state = new music_board(16);
+	alert(board_state);
 }
 
 function update() {
