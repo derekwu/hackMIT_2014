@@ -1,5 +1,11 @@
 // these are hard wired but meh who cares for now
 window.onload = function() {
+
+	function getText() {
+		var text = document.getElementById("textbox1").value
+		alert(text)
+	}
+
 	var TILE_WIDTH = 100
 	var TILE_HEIGHT = 100;
 
@@ -9,7 +15,7 @@ window.onload = function() {
 	var SIZE = 16;
 	var board_state = new music_board(SIZE);
 
-	var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
+	var game = new Phaser.Game(CELL_WIDTH * SIZE, CELL_HEIGHT * SIZE, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
 
 	var frame_counter = 0;
 	var column_counter = 0;
@@ -42,25 +48,17 @@ window.onload = function() {
 
 
 	function preload() {
-		//game.load.audio('major_pentatonic', 'assets/audio/outputMozart.wav');
 		game.load.image('dormant_square', 'assets/images/dormant_square.png');
 		game.load.image('active_square', 'assets/images/active_square.png');
 		game.load.image('highlight_dormant_square', 'assets/images/highlight_dormant_square.png');
 		game.load.image('highlight_active_square', 'assets/images/highlight_active_square.png');
 
+		setup();
+
 	}
 
 	function create() {
-
 		this.game.board_sprites = draw_board(board_state.board)
-
-		/*
-		fx = game.add.audio('major_pentatonic');
-		fx.play();
-
-		fx = setup_notes();
-		fx.play();
-		*/
 	}
 
 	function update() {
@@ -69,7 +67,6 @@ window.onload = function() {
 		column_counter = column_counter % SIZE;
 		
 		if (frame_counter === 0) {
-			//alert(column_counter);
 			for (i = 0; i < SIZE; i ++) {
 				prev_column_index = (column_counter - 1) % SIZE
 				if (prev_column_index === -1) {
@@ -79,7 +76,6 @@ window.onload = function() {
 				update_cell(board_state.board[i][column_counter], true, i, column_counter);
 				if (board_state.board[i][column_counter] == 1) {
 					notes.play((SIZE-1-i).toString());
-					//notes.fade(1,0,500);
 				}
 			}
 			column_counter += 1;
@@ -87,26 +83,14 @@ window.onload = function() {
 		
 		frame_counter += 1;
 	}
-		
-	/**
-		frame_counter = frame_counter % 60;
-		column_counter = column_counter % SIZE;
-		
-		if (frame_counter == 0) {
-			for (i = 0; i < SIZE; i ++) {
-				if (board_state.board[i][column_counter] == 1) {
-					fx.play(i.toString());
-					alert(column_counter);
-				}
-			}
-		}
-		
-		
-		frame_counter += 1;
-		column_counter += 1;
-		**/
-	
 
+	function setup() {
+		$("#button1").click(function() {
+			var text = $("#textbox1").val();
+            console.log(text);
+        });
+	}
+	
 	function setup_notes() {
 		fx = game.add.audio('major_pentatonic');
 		for (i = 0; i < SIZE; i++) {
